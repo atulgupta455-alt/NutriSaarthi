@@ -399,7 +399,7 @@ class PDFReport:
 
     def output_bytes(self):
     # fpdf2 can return str, bytes, or None depending on version/env
-    out = self.pdf.output(dest='S')
+        out = self.pdf.output(dest='S')
 
     if out is None:
         # fallback: write to BytesIO
@@ -579,6 +579,7 @@ with col2:
                 st.download_button("📥 Download 30-Day CSV", data=csv_bytes, file_name=f"NutriSaarthi_MonthPlan_{datetime.now().strftime('%Y%m%d')}.csv", mime="text/csv")
 st.markdown("---")
 st.write("Created by Dr Atul Gupta")
+
 
 
 
