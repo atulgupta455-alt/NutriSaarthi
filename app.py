@@ -285,6 +285,9 @@ def generate_month_plan(allowed_df, kcal_target, protein_target, days=30):
 
 # ---------- PDF: monthly report ----------
 class PDFReport:
+    def safe_multi_cell(self, text, h=6):
+    self.pdf.set_x(10)   # reset cursor to left margin
+    self.pdf.multi_cell(0, h, sanitize_text(text))
     def __init__(self, title="NutriSaarthi Monthly Plan", logo_path="logo.png", clinic_header=None):
         self.pdf = FPDF()
         self.title = title
@@ -323,7 +326,8 @@ class PDFReport:
             self.pdf.cell(0,6,sanitize_text("Safety flags:"), ln=True)
             self.pdf.set_font("Arial","",11)
             for f in flags:
-                self.pdf.multi_cell(0,6,sanitize_text(f"- {f}"))
+                self.safe_multi_cell(f"- {f}")
+
         else:
             self.pdf.cell(0,6,sanitize_text("Safety flags: None"), ln=True)
         self.pdf.ln(2)
@@ -332,7 +336,7 @@ class PDFReport:
             self.pdf.cell(0,6,sanitize_text("Referrals / Actions:"), ln=True)
             self.pdf.set_font("Arial","",11)
             for r in referrals:
-                self.pdf.multi_cell(0,6,sanitize_text(f"- {r}"))
+                self.safe_multi_cell(f"- {r}")
             self.pdf.ln(3)
 
     def add_neutropenic_guidance(self, flags):
@@ -349,7 +353,7 @@ class PDFReport:
             "• Practice strict food hygiene; avoid street/unregulated foods during neutropenia."
         ]
         for l in lines:
-            self.pdf.multi_cell(0,5,sanitize_text(l))
+            self.safe_multi_cell(l, h=5)
         self.pdf.ln(3)
 
     def add_month(self, month_plan):
@@ -410,7 +414,7 @@ def create_month_pdf_bytes(month_plan, patient_info, flags, targets, referrals=N
     report.add_neutropenic_guidance(flags)
     report.add_month(month_plan)
     report.pdf.set_font("Arial","I",9)
-    report.pdf.multi_cell(0,6,sanitize_text("Note: clinician-reviewable plan. Confirm before implementing."))
+    report.safe_multi_cell("Note: clinician-reviewable plan. Confirm before implementing.")
     return report.output_bytes()
 
 # ---------- STREAMLIT UI ----------
@@ -564,3 +568,4 @@ with col2:
                 st.download_button("📥 Download 30-Day CSV", data=csv_bytes, file_name=f"NutriSaarthi_MonthPlan_{datetime.now().strftime('%Y%m%d')}.csv", mime="text/csv")
 st.markdown("---")
 st.write("Created by Dr Atul Gupta")
+
