@@ -286,8 +286,8 @@ def generate_month_plan(allowed_df, kcal_target, protein_target, days=30):
 # ---------- PDF: monthly report ----------
 class PDFReport:
     def safe_multi_cell(self, text, h=6):
-    self.pdf.set_x(10)   # reset cursor to left margin
-    self.pdf.multi_cell(0, h, sanitize_text(text))
+        self.pdf.set_x(10)   # reset cursor to left margin
+        self.pdf.multi_cell(0, h, sanitize_text(text))
     def __init__(self, title="NutriSaarthi Monthly Plan", logo_path="logo.png", clinic_header=None):
         self.pdf = FPDF()
         self.title = title
@@ -568,4 +568,5 @@ with col2:
                 st.download_button("📥 Download 30-Day CSV", data=csv_bytes, file_name=f"NutriSaarthi_MonthPlan_{datetime.now().strftime('%Y%m%d')}.csv", mime="text/csv")
 st.markdown("---")
 st.write("Created by Dr Atul Gupta")
+
 
