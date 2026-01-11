@@ -397,7 +397,7 @@ class PDFReport:
             except:
                 self.pdf.ln(2)
 
-        def output_bytes(self):
+   def output_bytes(self):
         # fpdf2 can return str, bytes, or None depending on version/environment
         out = self.pdf.output(dest='S')
 
@@ -414,6 +414,7 @@ class PDFReport:
             return out.encode("latin-1")
         except:
             return out.encode("latin-1", "replace")
+
 
 
 def create_month_pdf_bytes(month_plan, patient_info, flags, targets, referrals=None, clinic_header=None):
@@ -578,6 +579,7 @@ with col2:
                 st.download_button("📥 Download 30-Day CSV", data=csv_bytes, file_name=f"NutriSaarthi_MonthPlan_{datetime.now().strftime('%Y%m%d')}.csv", mime="text/csv")
 st.markdown("---")
 st.write("Created by Dr Atul Gupta")
+
 
 
 
