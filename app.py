@@ -397,25 +397,24 @@ class PDFReport:
             except:
                 self.pdf.ln(2)
 
-    def output_bytes(self):
-    # fpdf2 can return str, bytes, or None depending on version/env
+        def output_bytes(self):
+        # fpdf2 can return str, bytes, or None depending on version/environment
         out = self.pdf.output(dest='S')
 
-    if out is None:
-        # fallback: write to BytesIO
-        buffer = BytesIO()
-        self.pdf.output(buffer)
-        buffer.seek(0)
-        return buffer.read()
+        if out is None:
+            buffer = BytesIO()
+            self.pdf.output(buffer)
+            buffer.seek(0)
+            return buffer.read()
 
-    if isinstance(out, bytes):
-        return out
+        if isinstance(out, bytes):
+            return out
 
-    # assume string
-    try:
-        return out.encode("latin-1")
-    except:
-        return out.encode("latin-1", "replace")
+        try:
+            return out.encode("latin-1")
+        except:
+            return out.encode("latin-1", "replace")
+
 
 def create_month_pdf_bytes(month_plan, patient_info, flags, targets, referrals=None, clinic_header=None):
     report = PDFReport(title="NutriSaarthi Monthly Diet Plan", clinic_header=clinic_header)
@@ -579,6 +578,7 @@ with col2:
                 st.download_button("📥 Download 30-Day CSV", data=csv_bytes, file_name=f"NutriSaarthi_MonthPlan_{datetime.now().strftime('%Y%m%d')}.csv", mime="text/csv")
 st.markdown("---")
 st.write("Created by Dr Atul Gupta")
+
 
 
 
